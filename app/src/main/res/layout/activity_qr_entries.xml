@@ -11,17 +11,18 @@
     tools:context="br.pedroso.starwars.qrEntries.ui.QrEntriesActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_qr_entries"
+        android:id="@+id/rv_qr_entries"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_scan_qr_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:src="@drawable/ic_qrcode_scan"
-        app:layout_anchor="@id/recyclerView_qr_entries"
+        app:layout_anchor="@id/rv_qr_entries"
         app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

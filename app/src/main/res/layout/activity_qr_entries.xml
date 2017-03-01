@@ -15,6 +15,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/tv_empty_qr_entries_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/no_qr_entries_available" />
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_scan_qr_code"
         android:layout_width="wrap_content"

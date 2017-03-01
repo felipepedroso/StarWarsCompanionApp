@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StarWarsCompanionApp</string>
+    <string name="no_qr_entries_available">There are no QR entries available. Scan one to start!</string>
 </resources>

@@ -20,12 +20,11 @@ public class StarWarsCharacter {
 
     private String birthYear;
 
-    public StarWarsCharacter(String name, int height, int mass, String species, List<StarWarsFilm> films, String homeworld, String birthYear) {
+    public StarWarsCharacter(String name, int height, int mass, String species, String homeworld, String birthYear) {
         this.name = name;
         this.height = height;
         this.mass = mass;
         this.species = species;
-        this.films = films;
         this.homeworld = homeworld;
         this.birthYear = birthYear;
     }

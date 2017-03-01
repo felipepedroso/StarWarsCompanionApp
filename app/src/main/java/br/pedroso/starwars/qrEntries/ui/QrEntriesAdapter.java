@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.pedroso.starwars.R;
+import br.pedroso.starwars.shared.domain.QrEntry;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -16,6 +20,7 @@ import butterknife.ButterKnife;
  */
 public class QrEntriesAdapter extends RecyclerView.Adapter<QrEntriesAdapter.ViewHolder> {
 
+    private List<QrEntry> qrEntries;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -30,13 +35,35 @@ public class QrEntriesAdapter extends RecyclerView.Adapter<QrEntriesAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.tvCharacterName.setText("Test");
-        holder.tvQrEntryUrl.setText("http://fakeurl.com");
+        QrEntry qrEntry = qrEntries.get(position);
+
+        String characterName = qrEntry.getCharacter().getName();
+        holder.tvCharacterName.setText(characterName);
+
+        String qrEntryUrl = qrEntry.getUrl();
+        holder.tvQrEntryUrl.setText(qrEntryUrl);
+    }
+
+    public void addQrEntry(QrEntry qrEntry){
+        if (qrEntries == null){
+            qrEntries = new ArrayList<>(0);
+        }
+
+        qrEntries.add(qrEntry);
+
+        notifyDataSetChanged();
+    }
+
+    public void clearItems(){
+        if(qrEntries != null){
+            qrEntries.clear();
+            notifyDataSetChanged();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 100;
+        return qrEntries != null ? qrEntries.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

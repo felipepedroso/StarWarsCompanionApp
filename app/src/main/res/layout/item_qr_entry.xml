@@ -6,22 +6,29 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/card_default_margin"
     android:elevation="@dimen/card_default_elevation"
-    card_view:cardCornerRadius="@dimen/card_default_radius">
+    card_view:cardCornerRadius="@dimen/card_default_radius"
+>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/tv_character_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/qr_entry_title_size"/>
 
         <TextView
             android:id="@+id/tv_qr_entry_url"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/qr_entry_subtitle_size"/>
 
     </LinearLayout>
 

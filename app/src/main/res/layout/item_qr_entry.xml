@@ -14,12 +14,12 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView_character_name"
+            android:id="@+id/tv_character_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/textView_entry_url"
+            android:id="@+id/tv_qr_entry_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

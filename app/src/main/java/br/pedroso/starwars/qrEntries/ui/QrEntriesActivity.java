@@ -56,6 +56,17 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
         ButterKnife.bind(this);
 
         setupRecyclerViewQrEntries();
+
+        setupFabListener();
+    }
+
+    private void setupFabListener() {
+        fabScanQrCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.clickedOnFabScanQrCode();
+            }
+        });
     }
 
     private void setupRecyclerViewQrEntries() {
@@ -88,7 +99,7 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
 
     @Override
     public void showLoadQrEntriesErrorMessage(Throwable throwable) {
-
+        // TODO
     }
 
     @Override

@@ -1,5 +1,7 @@
 package br.pedroso.starwars.qrEntries.presenter;
 
+import android.util.Log;
+
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.qrEntries.ui.QrEntriesActivity;
 import br.pedroso.starwars.shared.domain.QrEntry;
@@ -15,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class QrEntriesPresenter implements QrEntriesContract.Presenter {
+    private static final String LOG_TAG = QrEntriesPresenter.class.getName();
     private final QrEntriesContract.View view;
 
     public QrEntriesPresenter(QrEntriesContract.View view) {
@@ -48,8 +51,13 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
                 .subscribe(onNext, onError);
     }
 
+    @Override
+    public void clickedOnFabScanQrCode() {
+        Log.d(LOG_TAG, "Clicked!");
+    }
+
     public Flowable<QrEntry> qrEntriesStub() {
-        int entriesCount = 0;
+        int entriesCount = 50;
 
         QrEntry[] qrEntries = new QrEntry[entriesCount];
 

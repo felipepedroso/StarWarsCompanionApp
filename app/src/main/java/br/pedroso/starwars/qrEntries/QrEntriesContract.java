@@ -10,6 +10,8 @@ public interface QrEntriesContract {
     interface Presenter {
 
         void loadQrEntries();
+
+        void clickedOnFabScanQrCode();
     }
 
     interface View {

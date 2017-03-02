@@ -54,6 +54,8 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     @Override
     public void clickedOnFabScanQrCode() {
         Log.d(LOG_TAG, "Clicked!");
+
+        view.startQrScannerActivity();
     }
 
     public Flowable<QrEntry> qrEntriesStub() {

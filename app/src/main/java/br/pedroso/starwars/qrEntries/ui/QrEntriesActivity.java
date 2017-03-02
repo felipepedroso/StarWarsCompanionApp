@@ -1,21 +1,27 @@
 package br.pedroso.starwars.qrEntries.ui;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import br.pedroso.starwars.R;
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.qrEntries.presenter.QrEntriesPresenter;
+import br.pedroso.starwars.qrScanner.ui.QrScannerActivity;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class QrEntriesActivity extends AppCompatActivity implements QrEntriesContract.View {
+
+    public static final int SCAN_QR_CODE_REQUEST = 12;
+    private static final String LOG_TAG = QrEntriesActivity.class.getName();
 
     @BindView(R.id.rv_qr_entries)
     RecyclerView rvQrEntries;
@@ -110,5 +116,24 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
     @Override
     public void showQrEntriesList() {
         rvQrEntries.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void startQrScannerActivity() {
+        Intent intent = new Intent(this, QrScannerActivity.class);
+        startActivityForResult(intent, SCAN_QR_CODE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SCAN_QR_CODE_REQUEST) {
+                String qrScanResult = data.getStringExtra(QrScannerActivity.EXTRA_QR_SCAN_RESULT);
+
+                Log.d(LOG_TAG, qrScanResult);
+            }
+        }
     }
 }

@@ -28,5 +28,7 @@ public interface QrEntriesContract {
         void hideQrEntriesList();
 
         void showQrEntriesList();
+
+        void startQrScannerActivity();
     }
 }

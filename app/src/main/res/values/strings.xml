@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">StarWarsCompanionApp</string>
     <string name="no_qr_entries_available">There are no QR entries available. Scan one to start!</string>
+    <string name="permission_denied_message">It\'s not possible to capture QR Code without camera permission.</string>
 </resources>

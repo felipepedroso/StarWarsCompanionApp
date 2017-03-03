@@ -11,6 +11,6 @@ import io.reactivex.Observable;
 public class LocationDataSourceImpl implements LocationDataSource {
     @Override
     public Observable<QrEntryLocation> getLastKnowLocation() {
-        return Observable.just(new QrEntryLocation(0,0));
+        return Observable.just(new QrEntryLocation(0, 0));
     }
 }

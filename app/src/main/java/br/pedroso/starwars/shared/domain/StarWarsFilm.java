@@ -12,7 +12,7 @@ public class StarWarsFilm {
 
     private String directorName;
 
-    private  String posterUrl;
+    private String posterUrl;
 
     public StarWarsFilm(String title, int episodeId, long releaseDate, String directorName) {
         this.title = title;

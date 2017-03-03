@@ -2,9 +2,7 @@ package br.pedroso.starwars.shared.data.dataSources;
 
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 
 /**
  * Created by felipe on 03/03/17.

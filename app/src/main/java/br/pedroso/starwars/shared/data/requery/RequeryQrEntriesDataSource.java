@@ -4,7 +4,6 @@ import br.pedroso.starwars.shared.data.dataSources.QrEntriesDataSource;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.domain.QrEntryLocation;
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 /**

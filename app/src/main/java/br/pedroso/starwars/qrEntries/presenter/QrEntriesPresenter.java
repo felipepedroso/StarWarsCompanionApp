@@ -5,15 +5,12 @@ import android.util.Log;
 import javax.inject.Inject;
 
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
-import br.pedroso.starwars.shared.data.QrEntriesRepository;
 import br.pedroso.starwars.shared.data.location.LocationDataSourceImpl;
 import br.pedroso.starwars.shared.data.repository.QrEntriesRepositoryImpl;
 import br.pedroso.starwars.shared.data.requery.RequeryQrEntriesDataSource;
 import br.pedroso.starwars.shared.data.retrofit.RetrofitStarWarsApiDataSource;
 import br.pedroso.starwars.shared.domain.QrEntry;
-import br.pedroso.starwars.shared.domain.StarWarsCharacter;
 import br.pedroso.starwars.shared.utils.StarWarsApiUtils;
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;

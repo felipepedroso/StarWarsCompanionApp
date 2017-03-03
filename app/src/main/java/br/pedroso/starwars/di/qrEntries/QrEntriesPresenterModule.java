@@ -16,7 +16,7 @@ public class QrEntriesPresenterModule {
     }
 
     @Provides
-    QrEntriesContract.View provideQrEntriesView(){
+    QrEntriesContract.View provideQrEntriesView() {
         return view;
     }
 }

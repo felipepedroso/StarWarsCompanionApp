@@ -47,8 +47,8 @@ public class QrEntriesAdapter extends RecyclerView.Adapter<QrEntriesAdapter.View
         holder.tvQrEntryUrl.setText(qrEntryUrl);
     }
 
-    public void addQrEntry(QrEntry qrEntry){
-        if (qrEntries == null){
+    public void addQrEntry(QrEntry qrEntry) {
+        if (qrEntries == null) {
             qrEntries = new ArrayList<>(0);
         }
 
@@ -57,8 +57,8 @@ public class QrEntriesAdapter extends RecyclerView.Adapter<QrEntriesAdapter.View
         notifyDataSetChanged();
     }
 
-    public void clearItems(){
-        if(qrEntries != null){
+    public void clearItems() {
+        if (qrEntries != null) {
             qrEntries.clear();
             notifyDataSetChanged();
         }

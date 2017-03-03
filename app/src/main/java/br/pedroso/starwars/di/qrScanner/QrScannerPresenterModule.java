@@ -1,6 +1,5 @@
 package br.pedroso.starwars.di.qrScanner;
 
-import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.qrScanner.QrScannerContract;
 import dagger.Module;
 import dagger.Provides;
@@ -17,7 +16,7 @@ public class QrScannerPresenterModule {
     }
 
     @Provides
-    QrScannerContract.View provideQrEntriesView(){
+    QrScannerContract.View provideQrEntriesView() {
         return view;
     }
 }

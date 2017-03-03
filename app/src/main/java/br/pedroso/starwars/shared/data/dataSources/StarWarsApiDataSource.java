@@ -1,7 +1,6 @@
 package br.pedroso.starwars.shared.data.dataSources;
 
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 /**

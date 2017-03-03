@@ -9,7 +9,7 @@ public class QrEntry {
 
     private long registeredDate;
 
-    private  QrEntryLocation location;
+    private QrEntryLocation location;
 
     public QrEntry(StarWarsCharacter character, long registeredDate, QrEntryLocation location) {
         this.character = character;

@@ -6,6 +6,8 @@ import java.util.List;
  * Created by felipe on 01/03/17.
  */
 public class StarWarsCharacter {
+    private String url;
+
     private String name;
 
     private int height;
@@ -20,13 +22,16 @@ public class StarWarsCharacter {
 
     private String birthYear;
 
-    public StarWarsCharacter(String name, int height, int mass, String species, String homeworld, String birthYear) {
+    public StarWarsCharacter(String url, String name, int height, int mass, String birthYear) {
+        this.url = url;
         this.name = name;
         this.height = height;
         this.mass = mass;
-        this.species = species;
-        this.homeworld = homeworld;
         this.birthYear = birthYear;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public String getName() {

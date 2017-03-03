@@ -5,6 +5,11 @@ import android.util.Log;
 import javax.inject.Inject;
 
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
+import br.pedroso.starwars.shared.data.QrEntriesRepository;
+import br.pedroso.starwars.shared.data.location.LocationDataSourceImpl;
+import br.pedroso.starwars.shared.data.repository.QrEntriesRepositoryImpl;
+import br.pedroso.starwars.shared.data.requery.RequeryQrEntriesDataSource;
+import br.pedroso.starwars.shared.data.retrofit.RetrofitStarWarsApiDataSource;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
 import br.pedroso.starwars.shared.utils.StarWarsApiUtils;
@@ -20,10 +25,14 @@ import io.reactivex.functions.Consumer;
 public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     private static final String LOG_TAG = QrEntriesPresenter.class.getName();
     private final QrEntriesContract.View view;
+    private final QrEntriesRepositoryImpl repository;
 
     @Inject
     public QrEntriesPresenter(QrEntriesContract.View view) {
         this.view = view;
+
+        // TODO: replace this by usecases and (please) use Dagger2
+        repository = new QrEntriesRepositoryImpl(new RequeryQrEntriesDataSource(), new LocationDataSourceImpl(), new RetrofitStarWarsApiDataSource());
     }
 
     @Override
@@ -48,7 +57,8 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
             }
         };
 
-        qrEntriesStub()
+        // TODO: Replace this by an usecase execution.
+        repository.getAllQrEntries()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
     }
@@ -67,19 +77,5 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
         }
     }
 
-    private Flowable<QrEntry> qrEntriesStub() {
-        int entriesCount = 50;
 
-        QrEntry[] qrEntries = new QrEntry[entriesCount];
-
-        for (int i = 0; i < entriesCount; i++) {
-            StarWarsCharacter character = new StarWarsCharacter("Character " + i, 172, 72, "Human", "Planet", "YHASB");
-            QrEntry qrEntry = new QrEntry("Fake URL " + i, System.currentTimeMillis() - (i * 60000));
-            qrEntry.setCharacter(character);
-
-            qrEntries[i] = qrEntry;
-        }
-
-        return Flowable.fromArray(qrEntries);
-    }
 }

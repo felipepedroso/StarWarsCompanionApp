@@ -12,6 +12,7 @@ import java.util.List;
 
 import br.pedroso.starwars.R;
 import br.pedroso.starwars.shared.domain.QrEntry;
+import br.pedroso.starwars.shared.domain.StarWarsCharacter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -37,10 +38,12 @@ public class QrEntriesAdapter extends RecyclerView.Adapter<QrEntriesAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         QrEntry qrEntry = qrEntries.get(position);
 
-        String characterName = qrEntry.getCharacter().getName();
+        StarWarsCharacter character = qrEntry.getCharacter();
+
+        String characterName = character.getName();
         holder.tvCharacterName.setText(characterName);
 
-        String qrEntryUrl = qrEntry.getUrl();
+        String qrEntryUrl = character.getUrl();
         holder.tvQrEntryUrl.setText(qrEntryUrl);
     }
 

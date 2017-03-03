@@ -5,35 +5,16 @@ package br.pedroso.starwars.shared.domain;
  */
 
 public class QrEntry {
-    private String url;
-
     private StarWarsCharacter character;
 
     private long registeredDate;
 
-    private double latitude;
+    private  QrEntryLocation location;
 
-    private double longitude;
-
-    public QrEntry(String url, long registeredDate){
-        this.url = url;
-        this.registeredDate = registeredDate;
-    }
-
-    public void setCharacter(StarWarsCharacter character) {
+    public QrEntry(StarWarsCharacter character, long registeredDate, QrEntryLocation location) {
         this.character = character;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getUrl() {
-        return url;
+        this.registeredDate = registeredDate;
+        this.location = location;
     }
 
     public StarWarsCharacter getCharacter() {
@@ -44,11 +25,7 @@ public class QrEntry {
         return registeredDate;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
+    public QrEntryLocation getLocation() {
+        return location;
     }
 }

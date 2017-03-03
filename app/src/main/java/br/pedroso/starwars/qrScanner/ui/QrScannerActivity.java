@@ -18,7 +18,11 @@ import com.google.zxing.Result;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.pedroso.starwars.R;
+import br.pedroso.starwars.di.qrScanner.DaggerQrScannerComponent;
+import br.pedroso.starwars.di.qrScanner.QrScannerPresenterModule;
 import br.pedroso.starwars.qrScanner.QrScannerContract;
 import br.pedroso.starwars.qrScanner.presenter.QrScannerPresenter;
 import butterknife.BindView;
@@ -39,7 +43,8 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     @BindView(R.id.zxsv_scanner_view)
     ZXingScannerView zxsvScannerView;
 
-    private QrScannerPresenter presenter;
+    @Inject
+    QrScannerPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,8 +61,10 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     }
 
     private void injectPresenter() {
-        // TODO: replace by dependency injection
-        presenter = new QrScannerPresenter(this);
+        DaggerQrScannerComponent.builder()
+                .qrScannerPresenterModule(new QrScannerPresenterModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override

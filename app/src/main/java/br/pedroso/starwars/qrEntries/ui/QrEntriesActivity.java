@@ -1,16 +1,19 @@
 package br.pedroso.starwars.qrEntries.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import br.pedroso.starwars.R;
+import br.pedroso.starwars.di.qrEntries.DaggerQrEntriesComponent;
+import br.pedroso.starwars.di.qrEntries.QrEntriesPresenterModule;
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.qrEntries.presenter.QrEntriesPresenter;
 import br.pedroso.starwars.qrScanner.ui.QrScannerActivity;
@@ -34,7 +37,8 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
 
     private QrEntriesAdapter qrEntriesAdapter;
 
-    private QrEntriesPresenter presenter;
+    @Inject
+    QrEntriesPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,10 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
     }
 
     private void injectPresenter() {
-        // TODO: replace this by Dagger
-        presenter = new QrEntriesPresenter(this);
+        DaggerQrEntriesComponent.builder()
+                .qrEntriesPresenterModule(new QrEntriesPresenterModule(this))
+                .build()
+                .inject(this);
     }
 
     private void setupViews() {

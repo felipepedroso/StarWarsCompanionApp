@@ -1,13 +1,16 @@
 package br.pedroso.starwars.qrScanner.presenter;
 
+import javax.inject.Inject;
+
 import br.pedroso.starwars.qrScanner.QrScannerContract;
 
 /**
  * Created by felipe on 02/03/17.
  */
-public class QrScannerPresenter implements QrScannerContract.Presenter{
+public class QrScannerPresenter implements QrScannerContract.Presenter {
     private final QrScannerContract.View view;
 
+    @Inject
     public QrScannerPresenter(QrScannerContract.View view) {
         this.view = view;
     }

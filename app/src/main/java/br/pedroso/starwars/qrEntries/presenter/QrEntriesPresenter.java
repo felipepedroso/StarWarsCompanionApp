@@ -2,6 +2,8 @@ package br.pedroso.starwars.qrEntries.presenter;
 
 import android.util.Log;
 
+import javax.inject.Inject;
+
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
@@ -19,6 +21,7 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     private static final String LOG_TAG = QrEntriesPresenter.class.getName();
     private final QrEntriesContract.View view;
 
+    @Inject
     public QrEntriesPresenter(QrEntriesContract.View view) {
         this.view = view;
     }

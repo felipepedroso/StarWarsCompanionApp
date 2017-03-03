@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.pedroso.starwars.R;
-import br.pedroso.starwars.qrEntries.ui.QrEntriesActivity;
 import br.pedroso.starwars.qrScanner.QrScannerContract;
 import br.pedroso.starwars.qrScanner.presenter.QrScannerPresenter;
 import butterknife.BindView;
@@ -35,7 +34,7 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     private static final String TAG = QrScannerActivity.class.getName();
 
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
-    public static final String EXTRA_QR_SCAN_RESULT = "extra_qr_scan_result";
+    public static final String EXTRA_QR_CODE_SCAN_RESULT = "extra_qr_scan_result";
 
     @BindView(R.id.zxsv_scanner_view)
     ZXingScannerView zxsvScannerView;
@@ -133,7 +132,7 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     @Override
     public void finishActivityWithResult(String resultText) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(EXTRA_QR_SCAN_RESULT, resultText);
+        returnIntent.putExtra(EXTRA_QR_CODE_SCAN_RESULT, resultText);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

@@ -3,14 +3,13 @@ package br.pedroso.starwars.qrEntries.presenter;
 import android.util.Log;
 
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
-import br.pedroso.starwars.qrEntries.ui.QrEntriesActivity;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
+import br.pedroso.starwars.shared.utils.StarWarsApiUtils;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by felipe on 01/03/17.
@@ -53,12 +52,19 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
 
     @Override
     public void clickedOnFabScanQrCode() {
-        Log.d(LOG_TAG, "Clicked!");
-
         view.startQrScannerActivity();
     }
 
-    public Flowable<QrEntry> qrEntriesStub() {
+    @Override
+    public void handleQrCodeScanResult(String qrCodeScanResult) {
+        if (StarWarsApiUtils.isStarWarsPeopleApiUrl(qrCodeScanResult)) {
+            Log.d(LOG_TAG, "Valid url.");
+        } else {
+            Log.d(LOG_TAG, "Invalid url.");
+        }
+    }
+
+    private Flowable<QrEntry> qrEntriesStub() {
         int entriesCount = 50;
 
         QrEntry[] qrEntries = new QrEntry[entriesCount];

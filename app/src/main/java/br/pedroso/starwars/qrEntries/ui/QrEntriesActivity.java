@@ -130,9 +130,9 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
 
         if (resultCode == RESULT_OK) {
             if (requestCode == SCAN_QR_CODE_REQUEST) {
-                String qrScanResult = data.getStringExtra(QrScannerActivity.EXTRA_QR_SCAN_RESULT);
+                String qrCodeScanResult = data.getStringExtra(QrScannerActivity.EXTRA_QR_CODE_SCAN_RESULT);
 
-                Log.d(LOG_TAG, qrScanResult);
+                presenter.handleQrCodeScanResult(qrCodeScanResult);
             }
         }
     }

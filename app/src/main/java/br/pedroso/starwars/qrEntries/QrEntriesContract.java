@@ -12,6 +12,8 @@ public interface QrEntriesContract {
         void loadQrEntries();
 
         void clickedOnFabScanQrCode();
+
+        void handleQrCodeScanResult(String qrCodeScanResult);
     }
 
     interface View {

@@ -3,17 +3,11 @@ package br.pedroso.starwars.qrScanner.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Result;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +19,7 @@ import br.pedroso.starwars.di.qrScanner.DaggerQrScannerComponent;
 import br.pedroso.starwars.di.qrScanner.QrScannerPresenterModule;
 import br.pedroso.starwars.qrScanner.QrScannerContract;
 import br.pedroso.starwars.qrScanner.presenter.QrScannerPresenter;
+import br.pedroso.starwars.shared.utils.PermissionsUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -37,7 +32,6 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
 
     private static final String TAG = QrScannerActivity.class.getName();
 
-    private static final int CAMERA_PERMISSION_REQUEST_CODE = 1;
     public static final String EXTRA_QR_CODE_SCAN_RESULT = "extra_qr_scan_result";
 
     @BindView(R.id.zxsv_scanner_view)
@@ -75,18 +69,8 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     }
 
     @Override
-    public void requestCameraPermission() {
-        // TODO: check if the user needs an explanation for this permission and show a message.
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.CAMERA},
-                CAMERA_PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
     public boolean hasPermissionToAccessCamera() {
-        int cameraPermissionStatus = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
-
-        return cameraPermissionStatus == PackageManager.PERMISSION_GRANTED;
+        return PermissionsUtils.hasPermission(this, Manifest.permission.CAMERA);
     }
 
     @Override
@@ -103,12 +87,7 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     }
 
     private void setupResultHandler() {
-        zxsvScannerView.setResultHandler(new ZXingScannerView.ResultHandler() {
-            @Override
-            public void handleResult(Result result) {
-                presenter.handleScanResult(result.getText());
-            }
-        });
+        zxsvScannerView.setResultHandler(result -> presenter.handleScanResult(result.getText()));
     }
 
     private void setupSupportedFormat() {
@@ -123,11 +102,6 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     public void stopQrScanner() {
         zxsvScannerView.setResultHandler(null);
         zxsvScannerView.stopCamera();
-    }
-
-    @Override
-    public void showCameraPermissionDeniedMessage() {
-        Toast.makeText(this, R.string.permission_denied_message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -148,16 +122,5 @@ public class QrScannerActivity extends AppCompatActivity implements QrScannerCon
     protected void onPause() {
         super.onPause();
         presenter.pause();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                presenter.cameraPermissionGranted();
-            } else {
-                presenter.cameraPermissionDenied();
-            }
-        }
     }
 }

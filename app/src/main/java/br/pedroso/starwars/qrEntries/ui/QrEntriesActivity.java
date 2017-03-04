@@ -1,8 +1,16 @@
 package br.pedroso.starwars.qrEntries.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,13 +26,15 @@ import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.qrEntries.presenter.QrEntriesPresenter;
 import br.pedroso.starwars.qrScanner.ui.QrScannerActivity;
 import br.pedroso.starwars.shared.domain.QrEntry;
+import br.pedroso.starwars.shared.utils.PermissionsUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class QrEntriesActivity extends AppCompatActivity implements QrEntriesContract.View {
 
     public static final int SCAN_QR_CODE_REQUEST = 12;
-    private static final String LOG_TAG = QrEntriesActivity.class.getName();
+    private static final int PERMISSIONS_REQUEST_CODE = 12;
+    private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION};
 
     @BindView(R.id.rv_qr_entries)
     RecyclerView rvQrEntries;
@@ -34,6 +44,9 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
 
     @BindView(R.id.tv_empty_qr_entries_message)
     TextView tvEmptyQrEntriesMessage;
+
+    @BindView(R.id.cl_qr_entries_root)
+    CoordinatorLayout clQrEntriesRoot;
 
     private QrEntriesAdapter qrEntriesAdapter;
 
@@ -73,12 +86,7 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
     }
 
     private void setupFabListener() {
-        fabScanQrCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.clickedOnFabScanQrCode();
-            }
-        });
+        fabScanQrCode.setOnClickListener(view -> presenter.clickedOnFabScanQrCode());
     }
 
     private void setupRecyclerViewQrEntries() {
@@ -131,6 +139,42 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
     }
 
     @Override
+    public void requestRequiredPermissions() {
+        ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE);
+    }
+
+    @Override
+    public boolean hasRequiredPermissions() {
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (!PermissionsUtils.hasPermission(this, permission)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public void showPermissionsSettingsMessage() {
+        Snackbar.make(clQrEntriesRoot, R.string.check_permission_settings, Snackbar.LENGTH_LONG)
+                .setAction(R.string.permission_settings, view -> openApplicationPermissionSettings())
+                .show();
+    }
+
+    private void openApplicationPermissionSettings() {
+        Intent permissionsSettingsIntent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+        permissionsSettingsIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        permissionsSettingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(permissionsSettingsIntent);
+    }
+
+    @Override
+    public void showPermissionsDeniedMessage() {
+        Snackbar.make(clQrEntriesRoot, R.string.permission_denied_message, Snackbar.LENGTH_LONG)
+                .show();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -141,5 +185,40 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
                 presenter.handleQrCodeScanResult(qrCodeScanResult);
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if (hasGrantedPermissions(grantResults)) {
+                presenter.requiredPermissionsGranted();
+            } else {
+                if (hasRequestedToStopPermissionsDialog(permissions)) {
+                    presenter.userRequestedToStopPermissionsDialog();
+                } else {
+                    presenter.requiredPermissionsDenied();
+                }
+            }
+        }
+    }
+
+    private boolean hasRequestedToStopPermissionsDialog(String[] permissions) {
+        for (String permission : permissions) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean hasGrantedPermissions(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

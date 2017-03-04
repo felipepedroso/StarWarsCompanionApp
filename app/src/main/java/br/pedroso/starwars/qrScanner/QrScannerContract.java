@@ -12,22 +12,14 @@ public interface QrScannerContract {
         void handleScanResult(String resultText);
 
         void pause();
-
-        void cameraPermissionGranted();
-
-        void cameraPermissionDenied();
     }
 
     interface View {
         boolean hasPermissionToAccessCamera();
 
-        void requestCameraPermission();
-
         void startQrScanner();
 
         void stopQrScanner();
-
-        void showCameraPermissionDeniedMessage();
 
         void finishActivityWithNoResult();
 

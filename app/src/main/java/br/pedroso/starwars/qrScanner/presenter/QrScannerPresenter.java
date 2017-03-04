@@ -20,29 +20,17 @@ public class QrScannerPresenter implements QrScannerContract.Presenter {
         if (view.hasPermissionToAccessCamera()) {
             view.startQrScanner();
         } else {
-            view.requestCameraPermission();
+            view.finishActivityWithNoResult();
         }
     }
 
     @Override
     public void handleScanResult(String resultText) {
-        // TODO: check if the scanned text is a valid URL.
         view.finishActivityWithResult(resultText);
     }
 
     @Override
     public void pause() {
         view.stopQrScanner();
-    }
-
-    @Override
-    public void cameraPermissionGranted() {
-        view.startQrScanner();
-    }
-
-    @Override
-    public void cameraPermissionDenied() {
-        view.showCameraPermissionDeniedMessage();
-        view.finishActivityWithNoResult();
     }
 }

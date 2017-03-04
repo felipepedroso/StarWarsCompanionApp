@@ -62,7 +62,11 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
 
     @Override
     public void clickedOnFabScanQrCode() {
-        view.startQrScannerActivity();
+        if (view.hasRequiredPermissions()) {
+            view.startQrScannerActivity();
+        } else {
+            view.requestRequiredPermissions();
+        }
     }
 
     @Override
@@ -74,5 +78,18 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
         }
     }
 
+    @Override
+    public void requiredPermissionsDenied() {
+        view.showPermissionsDeniedMessage();
+    }
 
+    @Override
+    public void requiredPermissionsGranted() {
+        view.startQrScannerActivity();
+    }
+
+    @Override
+    public void userRequestedToStopPermissionsDialog() {
+        view.showPermissionsSettingsMessage();
+    }
 }

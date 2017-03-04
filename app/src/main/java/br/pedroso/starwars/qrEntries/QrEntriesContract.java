@@ -14,6 +14,12 @@ public interface QrEntriesContract {
         void clickedOnFabScanQrCode();
 
         void handleQrCodeScanResult(String qrCodeScanResult);
+
+        void requiredPermissionsDenied();
+
+        void requiredPermissionsGranted();
+
+        void userRequestedToStopPermissionsDialog();
     }
 
     interface View {
@@ -32,5 +38,13 @@ public interface QrEntriesContract {
         void showQrEntriesList();
 
         void startQrScannerActivity();
+
+        void requestRequiredPermissions();
+
+        boolean hasRequiredPermissions();
+
+        void showPermissionsSettingsMessage();
+
+        void showPermissionsDeniedMessage();
     }
 }

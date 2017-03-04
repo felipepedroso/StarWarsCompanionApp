@@ -60,5 +60,6 @@ dependencies {
     compile 'io.requery:requery-android:1.2.0'
     annotationProcessor 'io.requery:requery-processor:1.2.0'
 
-
+    // Android Reactive Location
+    compile 'com.patloew.rxlocation:rxlocation:1.0.1'
 }

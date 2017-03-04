@@ -1,5 +1,7 @@
 package br.pedroso.starwars.shared.data.repository;
 
+import javax.inject.Inject;
+
 import br.pedroso.starwars.shared.data.QrEntriesRepository;
 import br.pedroso.starwars.shared.data.dataSources.LocationDataSource;
 import br.pedroso.starwars.shared.data.dataSources.QrEntriesDataSource;
@@ -19,6 +21,7 @@ public class QrEntriesRepositoryImpl implements QrEntriesRepository {
     private LocationDataSource locationDataSource;
     private StarWarsApiDataSource starWarsApiDataSource;
 
+    @Inject
     public QrEntriesRepositoryImpl(QrEntriesDataSource qrEntriesDataSource, LocationDataSource locationDataSource, StarWarsApiDataSource starWarsApiDataSource) {
         this.qrEntriesDataSource = qrEntriesDataSource;
         this.locationDataSource = locationDataSource;

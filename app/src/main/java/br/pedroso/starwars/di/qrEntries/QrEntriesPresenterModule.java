@@ -1,6 +1,8 @@
 package br.pedroso.starwars.di.qrEntries;
 
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
+import br.pedroso.starwars.qrEntries.usecases.GetAllQrEntries;
+import br.pedroso.starwars.shared.data.QrEntriesRepository;
 import dagger.Module;
 import dagger.Provides;
 
@@ -18,5 +20,10 @@ public class QrEntriesPresenterModule {
     @Provides
     QrEntriesContract.View provideQrEntriesView() {
         return view;
+    }
+
+    @Provides
+    GetAllQrEntries provideGetAllQrEntriesUsecase(QrEntriesRepository repository) {
+        return new GetAllQrEntries(repository);
     }
 }

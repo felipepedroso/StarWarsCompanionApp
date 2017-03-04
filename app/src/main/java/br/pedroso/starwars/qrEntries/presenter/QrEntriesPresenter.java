@@ -5,10 +5,7 @@ import android.util.Log;
 import javax.inject.Inject;
 
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
-import br.pedroso.starwars.shared.data.location.LocationDataSourceImpl;
-import br.pedroso.starwars.shared.data.repository.QrEntriesRepositoryImpl;
-import br.pedroso.starwars.shared.data.requery.RequeryQrEntriesDataSource;
-import br.pedroso.starwars.shared.data.retrofit.RetrofitStarWarsApiDataSource;
+import br.pedroso.starwars.qrEntries.usecases.GetAllQrEntries;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.utils.StarWarsApiUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,14 +19,12 @@ import io.reactivex.functions.Consumer;
 public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     private static final String LOG_TAG = QrEntriesPresenter.class.getName();
     private final QrEntriesContract.View view;
-    private final QrEntriesRepositoryImpl repository;
+    private GetAllQrEntries getAllQrEntries;
 
     @Inject
-    public QrEntriesPresenter(QrEntriesContract.View view) {
+    public QrEntriesPresenter(QrEntriesContract.View view, GetAllQrEntries getAllQrEntries) {
         this.view = view;
-
-        // TODO: replace this by usecases and (please) use Dagger2
-        repository = new QrEntriesRepositoryImpl(new RequeryQrEntriesDataSource(), new LocationDataSourceImpl(), new RetrofitStarWarsApiDataSource());
+        this.getAllQrEntries = getAllQrEntries;
     }
 
     @Override
@@ -54,8 +49,7 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
             }
         };
 
-        // TODO: Replace this by an usecase execution.
-        repository.getAllQrEntries()
+        getAllQrEntries.execute()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onNext, onError);
     }

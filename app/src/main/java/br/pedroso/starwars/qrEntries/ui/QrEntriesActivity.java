@@ -20,6 +20,8 @@ import android.widget.TextView;
 import javax.inject.Inject;
 
 import br.pedroso.starwars.R;
+import br.pedroso.starwars.StarWarsCompanionApplication;
+import br.pedroso.starwars.di.application.ApplicationComponent;
 import br.pedroso.starwars.di.qrEntries.DaggerQrEntriesComponent;
 import br.pedroso.starwars.di.qrEntries.QrEntriesPresenterModule;
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
@@ -69,8 +71,13 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
     }
 
     private void injectPresenter() {
+        StarWarsCompanionApplication application = (StarWarsCompanionApplication) getApplication();
+
+        ApplicationComponent applicationComponent = application.getApplicationComponent();
+
         DaggerQrEntriesComponent.builder()
                 .qrEntriesPresenterModule(new QrEntriesPresenterModule(this))
+                .applicationComponent(applicationComponent)
                 .build()
                 .inject(this);
     }
@@ -189,6 +196,7 @@ public class QrEntriesActivity extends AppCompatActivity implements QrEntriesCon
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // TODO: request permissions using RxJava: https://github.com/beworker/rx-android-permissions
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             if (hasGrantedPermissions(grantResults)) {
                 presenter.requiredPermissionsGranted();

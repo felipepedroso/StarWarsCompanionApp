@@ -14,20 +14,32 @@ public class StarWarsCharacter {
 
     private int mass;
 
-    private String species;
+    private String birthYear;
 
-    private List<StarWarsFilm> films;
+    private String species;
 
     private String homeworld;
 
-    private String birthYear;
+    private List<StarWarsFilm> films;
 
-    public StarWarsCharacter(String url, String name, int height, int mass, String birthYear) {
+
+    public StarWarsCharacter(String url, String name, int height, int mass, String birthYear, String species, String homeworld, List<StarWarsFilm> films) {
         this.url = url;
         this.name = name;
         this.height = height;
         this.mass = mass;
         this.birthYear = birthYear;
+        this.species = species;
+        this.homeworld = homeworld;
+        this.films = films;
+    }
+
+    public StarWarsCharacter(String url, String name, int height, int mass, String birthYear, String species, String homeworld) {
+        this(url, name, height, mass, birthYear, species, homeworld, null);
+    }
+
+    public StarWarsCharacter(String url, String name, int height, int mass, String birthYear) {
+        this(url, name, height, mass, birthYear, "", "", null);
     }
 
     public String getUrl() {
@@ -46,19 +58,35 @@ public class StarWarsCharacter {
         return mass;
     }
 
-    public String getSpecies() {
-        return species;
+    public String getBirthYear() {
+        return birthYear;
     }
 
-    public List<StarWarsFilm> getFilms() {
-        return films;
+    public String getSpecies() {
+        return species;
     }
 
     public String getHomeworld() {
         return homeworld;
     }
 
-    public String getBirthYear() {
-        return birthYear;
+    public List<StarWarsFilm> getFilms() {
+        return films;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public void setHomeworld(String homeworld) {
+        this.homeworld = homeworld;
+    }
+
+    public void setFilms(List<StarWarsFilm> films) {
+        this.films = films;
     }
 }

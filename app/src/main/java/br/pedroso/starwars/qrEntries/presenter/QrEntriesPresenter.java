@@ -6,11 +6,10 @@ import javax.inject.Inject;
 
 import br.pedroso.starwars.qrEntries.QrEntriesContract;
 import br.pedroso.starwars.qrEntries.usecases.GetAllQrEntries;
+import br.pedroso.starwars.qrEntries.usecases.InsertQrEntry;
 import br.pedroso.starwars.shared.domain.QrEntry;
 import br.pedroso.starwars.shared.utils.StarWarsApiUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by felipe on 01/03/17.
@@ -19,12 +18,14 @@ import io.reactivex.functions.Consumer;
 public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     private static final String LOG_TAG = QrEntriesPresenter.class.getName();
     private final QrEntriesContract.View view;
+    private final InsertQrEntry insertQrEntry;
     private GetAllQrEntries getAllQrEntries;
 
     @Inject
-    public QrEntriesPresenter(QrEntriesContract.View view, GetAllQrEntries getAllQrEntries) {
+    public QrEntriesPresenter(QrEntriesContract.View view, GetAllQrEntries getAllQrEntries, InsertQrEntry insertQrEntry) {
         this.view = view;
         this.getAllQrEntries = getAllQrEntries;
+        this.insertQrEntry = insertQrEntry;
     }
 
     @Override
@@ -33,31 +34,20 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
         view.hideQrEntriesList();
         view.showEmptyEntriesListMessage();
 
-        Consumer<? super QrEntry> onNext = new Consumer<QrEntry>() {
-            @Override
-            public void accept(@NonNull QrEntry qrEntry) throws Exception {
-                view.hideEmptyEntriesListMessage();
-                view.showQrEntriesList();
-                view.addQrEntry(qrEntry);
-            }
-        };
-
-        Consumer<? super Throwable> onError = new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                view.showLoadQrEntriesErrorMessage(throwable);
-            }
-        };
-
         getAllQrEntries.execute()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onNext, onError);
+                .subscribe(this::addNewQrEntry, this::handleLoadQrEntriesError);
+    }
+
+    private void handleLoadQrEntriesError(Throwable throwable) {
+        view.showLoadQrEntriesErrorMessage(throwable);
     }
 
     @Override
     public void clickedOnFabScanQrCode() {
         if (view.hasRequiredPermissions()) {
-            view.startQrScannerActivity();
+            //view.startQrScannerActivity();
+            handleQrCodeScanResult("http://swapi.co/api/people/1/");
         } else {
             view.requestRequiredPermissions();
         }
@@ -66,10 +56,23 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     @Override
     public void handleQrCodeScanResult(String qrCodeScanResult) {
         if (StarWarsApiUtils.isStarWarsPeopleApiUrl(qrCodeScanResult)) {
-            Log.d(LOG_TAG, "Valid url.");
+            insertQrEntry.execute(qrCodeScanResult)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::addNewQrEntry, this::handleAddNewQrEntryError);
         } else {
             Log.d(LOG_TAG, "Invalid url.");
         }
+    }
+
+    private void handleAddNewQrEntryError(Throwable throwable) {
+        // TODO
+        Log.d(LOG_TAG, "Failed to add new qr entry");
+    }
+
+    private void addNewQrEntry(QrEntry qrEntry) {
+        view.hideEmptyEntriesListMessage();
+        view.showQrEntriesList();
+        view.addQrEntry(qrEntry);
     }
 
     @Override

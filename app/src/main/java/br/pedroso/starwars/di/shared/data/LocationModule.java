@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.patloew.rxlocation.RxLocation;
 
+import java.util.concurrent.TimeUnit;
+
 import br.pedroso.starwars.shared.data.dataSources.LocationDataSource;
 import br.pedroso.starwars.shared.data.location.RxLocationDataSource;
 import dagger.Module;
@@ -18,6 +20,10 @@ public class LocationModule {
 
     @Provides
     RxLocation provideRxLocation(Context context) {
+        RxLocation rxLocation = new RxLocation(context);
+
+        rxLocation.setDefaultTimeout(15, TimeUnit.SECONDS);
+
         return new RxLocation(context);
     }
 

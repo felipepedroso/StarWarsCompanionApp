@@ -89,4 +89,14 @@ public class StarWarsCharacter {
     public void setFilms(List<StarWarsFilm> films) {
         this.films = films;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof StarWarsCharacter) {
+            String anotherCharacterUrl = ((StarWarsCharacter) obj).url;
+            return url.compareTo(anotherCharacterUrl) == 0;
+        }
+
+        return false;
+    }
 }

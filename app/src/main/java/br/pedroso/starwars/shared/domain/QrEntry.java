@@ -28,4 +28,15 @@ public class QrEntry {
     public QrEntryLocation getLocation() {
         return location;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof QrEntry){
+            QrEntry other = (QrEntry) obj;
+
+            return character.equals(other.character) && registeredDate == registeredDate;
+        }
+
+        return false;
+    }
 }

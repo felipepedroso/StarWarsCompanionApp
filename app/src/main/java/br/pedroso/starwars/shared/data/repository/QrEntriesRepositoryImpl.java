@@ -38,18 +38,23 @@ public class QrEntriesRepositoryImpl implements QrEntriesRepository {
         final long timestampNow = System.currentTimeMillis();
 
         Observable<StarWarsCharacter> starWarsApiObservable = starWarsApiDataSource.getStarWarsCharacter(url)
-                .flatMap(starWarsCharacter -> qrEntriesDataSource.insertStarWarsCharacter(starWarsCharacter));
+                .doOnNext(starWarsCharacter -> qrEntriesDataSource.insertStarWarsCharacter(starWarsCharacter));
 
         Observable<StarWarsCharacter> observableCharacter = qrEntriesDataSource
                 .getCharacterByUrl(url)
-                .onErrorResumeNext(starWarsApiObservable);
+                .switchIfEmpty(starWarsApiObservable);
 
-        Observable<QrEntryLocation> observableLocation = locationDataSource.getLastKnowLocation();
+        Observable<QrEntryLocation> observableLocation = locationDataSource.getLocation();
 
         return Observable.zip(observableCharacter,
                 observableLocation,
                 (starWarsCharacter, qrEntryLocation) -> new QrEntry(starWarsCharacter, timestampNow, qrEntryLocation))
                 .flatMap(qrEntry -> qrEntriesDataSource.insertQrEntry(qrEntry))
                 .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<Integer> deleteAllQrEntries() {
+        return qrEntriesDataSource.deleteAllQrEntries();
     }
 }

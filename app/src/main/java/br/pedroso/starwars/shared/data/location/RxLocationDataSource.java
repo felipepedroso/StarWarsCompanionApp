@@ -2,17 +2,15 @@ package br.pedroso.starwars.shared.data.location;
 
 import android.location.Location;
 
+import com.google.android.gms.location.LocationRequest;
 import com.patloew.rxlocation.RxLocation;
 
 import javax.inject.Inject;
 
 import br.pedroso.starwars.shared.data.dataSources.LocationDataSource;
+import br.pedroso.starwars.shared.data.location.mappers.QrEntryLocationMapper;
 import br.pedroso.starwars.shared.domain.QrEntryLocation;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 
 /**
  * Created by felipe on 03/03/17.
@@ -20,47 +18,35 @@ import io.reactivex.functions.Function;
 
 public class RxLocationDataSource implements LocationDataSource {
 
+    private final LocationRequest locationRequest;
     private RxLocation rxLocation;
 
     @Inject
     public RxLocationDataSource(RxLocation rxLocation) {
         this.rxLocation = rxLocation;
-    }
 
-    public RxLocationDataSource() {
-        this(null);
+        this.locationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setNumUpdates(1);
     }
 
     @Override
-    public Observable<QrEntryLocation> getLastKnowLocation() {
-        Observable<Location> lastKnowLocationObservable;
-        try {
-            // TODO: understand 'Maybe' a little bit more and refactor this.
-            lastKnowLocationObservable = rxLocation.location()
-                    .lastLocation()
-                    .toObservable();
-
-        } catch (SecurityException ex) {
-            // TODO: this is a little bit ugly, we also need to refactor this.
-            lastKnowLocationObservable = Observable.create(new ObservableOnSubscribe<Location>() {
-                @Override
-                public void subscribe(ObservableEmitter<Location> e) throws Exception {
-                    e.onError(ex);
-                }
-            });
-        }
-
-        return lastKnowLocationObservable.map(new AndroidLocationToQrEntryLocationMapper());
+    public Observable<QrEntryLocation> getLocation() {
+        return rxLocation.settings()
+                .checkAndHandleResolution(locationRequest)
+                .flatMapObservable(this::getLocationObservable)
+                .map(QrEntryLocationMapper::mapAndroidLocationToQrEntryLocation);
     }
 
-    private class AndroidLocationToQrEntryLocationMapper implements Function<Location, QrEntryLocation> {
+    private Observable<Location> getLocationObservable(Boolean hasLocationAvailable) {
+        Observable<Location> locationObservable;
 
-        @Override
-        public QrEntryLocation apply(@NonNull Location location) throws Exception {
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-
-            return new QrEntryLocation(latitude, longitude);
+        if(hasLocationAvailable) {
+            locationObservable = rxLocation.location().updates(locationRequest);
+        } else {
+            locationObservable =  rxLocation.location().lastLocation().toObservable();
         }
+
+        return locationObservable;
     }
 }

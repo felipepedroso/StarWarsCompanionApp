@@ -11,4 +11,6 @@ public interface QrEntriesRepository {
     Observable<QrEntry> getAllQrEntries();
 
     Observable<QrEntry> insertNewQrEntry(String url);
+
+    Observable<Integer> deleteAllQrEntries();
 }

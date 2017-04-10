@@ -1,5 +1,7 @@
 package br.pedroso.starwars.shared.data.retrofit;
 
+import java.util.Random;
+
 import br.pedroso.starwars.shared.data.dataSources.StarWarsApiDataSource;
 import br.pedroso.starwars.shared.domain.StarWarsCharacter;
 import io.reactivex.Observable;
@@ -11,6 +13,7 @@ import io.reactivex.Observable;
 public class RetrofitStarWarsApiDataSource implements StarWarsApiDataSource {
     @Override
     public Observable<StarWarsCharacter> getStarWarsCharacter(String url) {
-        return Observable.just(new StarWarsCharacter("Fake Url", "Fake Character", 172, 73, ""));
+        int character = new Random().nextInt();
+        return Observable.just(new StarWarsCharacter("Fake Url" + character, "Fake Character" + character, 172, 73, ""));
     }
 }

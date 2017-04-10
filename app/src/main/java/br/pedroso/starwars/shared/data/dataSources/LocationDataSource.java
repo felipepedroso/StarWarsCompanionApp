@@ -8,5 +8,5 @@ import io.reactivex.Observable;
  */
 
 public interface LocationDataSource {
-    Observable<QrEntryLocation> getLastKnowLocation();
+    Observable<QrEntryLocation> getLocation();
 }

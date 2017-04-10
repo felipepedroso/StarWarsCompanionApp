@@ -32,9 +32,11 @@ public class StarWarsCharacterMapper {
         requeryStarWarsCharacter.setSpecies(species);
         requeryStarWarsCharacter.setUrl(url);
 
-        for (StarWarsFilm starWarsFilm : starWarsCharacter.getFilms()) {
-            RequeryStarWarsFilm requeryStarWarsFilm = StarWarsFilmMapper.mapDomainToRequery(starWarsFilm);
-            requeryStarWarsCharacter.getFilms().add(requeryStarWarsFilm);
+        if(starWarsCharacter.getFilms() != null) {
+            for (StarWarsFilm starWarsFilm : starWarsCharacter.getFilms()) {
+                RequeryStarWarsFilm requeryStarWarsFilm = StarWarsFilmMapper.mapDomainToRequery(starWarsFilm);
+                requeryStarWarsCharacter.getFilms().add(requeryStarWarsFilm);
+            }
         }
 
         return requeryStarWarsCharacter;

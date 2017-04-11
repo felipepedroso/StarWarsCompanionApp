@@ -49,8 +49,8 @@ public class QrEntriesRepositoryImpl implements QrEntriesRepository {
         return Observable.zip(observableCharacter,
                 observableLocation,
                 (starWarsCharacter, qrEntryLocation) -> new QrEntry(starWarsCharacter, timestampNow, qrEntryLocation))
-                .flatMap(qrEntry -> qrEntriesDataSource.insertQrEntry(qrEntry))
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .flatMap(qrEntry -> qrEntriesDataSource.insertQrEntry(qrEntry));
     }
 
     @Override

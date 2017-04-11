@@ -47,6 +47,7 @@ public class QrEntriesPresenter implements QrEntriesContract.Presenter {
     public void clickedOnFabScanQrCode() {
         if (view.hasRequiredPermissions()) {
             //view.startQrScannerActivity();
+
             handleQrCodeScanResult("http://swapi.co/api/people/1/");
         } else {
             view.requestRequiredPermissions();
